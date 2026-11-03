@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/">
+<title>Tiro</title>
+<meta name="description" content="Tiro — transcribe audio, vídeo, enlaces y tu voz sin salir de tu equipo; pregunta a tus audios con citas al minuto y conviértelos en guías, capítulos o reels.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<link rel="stylesheet" href="eyverqt.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="header page">
+  <a class="logo" href="transcribir" data-ir="transcribir">Tiro<br><span id="logoSub">Transcribir</span></a>
+  <div class="meta"><span class="muted" id="metaMotor">—</span><span class="muted" id="metaIA">—</span><span class="hot" id="live">100% local</span></div>
+</header>
+
+<nav class="nav page sub" id="tabs" aria-label="Secciones">
+  <a href="transcribir" data-ir="transcribir">Transcribir</a>
+  <a href="biblioteca" data-ir="biblioteca">Biblioteca <span class="muted" id="nLib"></span></a>
+  <a href="preguntar" data-ir="preguntar">Preguntar</a>
+  <a href="crear" data-ir="crear">Crear</a>
+  <a href="ajustes" data-ir="ajustes">Ajustes</a>
+</nav>
+
+<div class="bar page-bar" id="barTop"><i></i></div>
+
+<main class="wrap">
+
+  <!-- ================================================== TRANSCRIBIR -->
+  <section class="pagina" data-p="transcribir">
+    <div class="cols">
+      <div>
+        <section class="step">
+          <div class="label up"><b>01 · Entrada</b><span class="muted">Archivos, enlaces o tu voz</span></div>
+          <div class="drop" id="drop" tabindex="0">
+            <span class="display drop-t">Suelta audios o vídeos</span>
+            <small>MP4 · MKV · MOV · MP3 · WAV · M4A · OGG · OPUS · Y 20 MÁS</small>
+          </div>
+          <div class="acts">
+            <button class="btn" type="button" id="btnAdd" title="Diálogo de Windows: lee del disco sin copiar">Añadir archivos</button>
+            <button class="btn ghost-btn" type="button" id="btnDictar" title="Alt+D">Dictar</button>
+          </div>
+          <div class="linkbox">
+            <label class="field"><input id="urls" spellcheck="false" autocomplete="off" placeholder="Pega enlaces: YouTube, TikTok, Instagram, podcasts…"></label>
+            <button class="btn ghost-btn" type="button" id="btnTraer">Traer</button>
+          </div>
+        </section>
+
+        <section class="step">
+          <div class="label up"><b>02 · Ajustes</b><span class="muted" id="capHint"></span></div>
+          <div class="opt"><span>Idioma</span>
+            <div class="seg" data-key="idioma"><button type="button" data-v="">Auto</button><button type="button" data-v="es">ES</button><button type="button" data-v="en">EN</button><button type="button" data-v="pt">PT</button><button type="button" data-v="fr">FR</button><button type="button" data-v="de">DE</button><button type="button" data-v="it">IT</button></div></div>
+          <div class="opt"><span>Modelo</span><div class="seg" data-key="modelo" id="segModelo"></div></div>
+          <div class="opt" id="optFiel"><span>Fidelidad</span>
+            <div class="seg" data-key="fiel"><button type="button" data-v="true">Máxima</button><button type="button" data-v="false">Normal</button></div></div>
+          <div class="opt" id="optWorkers"><span>Trozos en paralelo</span>
+            <div class="seg" data-key="workers"><button type="button" data-v="0">Auto</button><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="4">4</button></div></div>
+          <label class="field"><input id="vocabulario" spellcheck="false" placeholder="Nombres propios y jerga: Eyver, AGOGE, RPE…"></label>
+        </section>
+
+        <section class="step">
+          <div class="label up"><b>03 · Cola</b><span><span class="muted" id="colaHint">0 archivos</span><button type="button" class="lnk" id="btnDetener">Detener</button><button type="button" class="lnk" id="btnLimpiar">Limpiar</button></span></div>
+          <ul class="jobs" id="cola"></ul>
+          <p class="vacio muted up" id="colaVacia">Nada en cola. Lo que transcribas se guarda solo en la biblioteca.</p>
+        </section>
+      </div>
+
+      <div class="pegado">
+        <section class="step">
+          <div class="label up"><b id="salidaTitulo">04 · Texto en vivo</b><span class="muted" id="salidaTag"></span></div>
+          <div class="salida" id="salida"><div class="ghost vacio-g">Tiro<small>El texto aparece aquí mientras el modelo escucha</small></div></div>
+          <div class="opt"><span>Formato</span>
+            <div class="seg" data-key="formato"><button type="button" data-v="txt">TXT</button><button type="button" data-v="parrafos">Párrafos</button><button type="button" data-v="marcas">Marcas</button><button type="button" data-v="srt">SRT</button><button type="button" data-v="vtt">VTT</button><button type="button" data-v="json">JSON</button></div></div>
+          <div class="acts">
+            <button class="btn" type="button" id="btnCopiar" title="Ctrl+C">Copiar</button>
+            <button class="btn ghost-btn" type="button" id="btnGuardar" title="Ctrl+S">Guardar</button>
+            <button class="btn ghost-btn" type="button" id="btnIrPreguntar">Preguntar →</button>
+            <button class="btn ghost-btn" type="button" id="btnIrCrear">Crear →</button>
+          </div>
+          <div class="stats mini" id="salidaStats">
+            <div><b id="stLineas">0</b>Líneas</div>
+            <div><b id="stPalabras">0</b>Palabras</div>
+            <div><b id="stVeloz">—</b>× tiempo real</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== BIBLIOTECA -->
+  <section class="pagina" data-p="biblioteca" hidden>
+    <div class="stats" id="libStats">
+      <div><b id="lsN">0</b>Transcripciones</div>
+      <div><b id="lsH">0</b><span id="lsHt">Horas de audio</span></div>
+      <div><b id="lsP">0</b>Palabras</div>
+    </div>
+    <div class="cols">
+      <div>
+        <section class="step">
+          <div class="label up"><b>Buscar en todo</b><span class="muted" id="libHint">Ctrl+K</span></div>
+          <label class="field"><input id="libQ" spellcheck="false" autocomplete="off" placeholder="Una palabra, una idea, un nombre…"></label>
+          <ul class="list ents" id="libLista"></ul>
+          <div class="ghost vacio-g" id="libVacia" hidden>Vacía<small>Transcribe algo y aparecerá aquí</small></div>
+        </section>
+      </div>
+      <div class="pegado">
+        <section class="step" id="libDet" hidden>
+          <div class="label up"><b>Transcripción</b><span class="muted" id="detMeta"></span></div>
+          <h2 class="display det-t" id="detTitulo" spellcheck="false"></h2>
+          <div class="acts">
+            <button class="btn" type="button" id="detCopiar">Copiar</button>
+            <button class="btn ghost-btn" type="button" id="detExportar">Exportar</button>
+            <button class="btn ghost-btn" type="button" id="detPreguntar">Preguntar →</button>
+            <button class="btn ghost-btn" type="button" id="detCrear">Crear →</button>
+          </div>
+          <div class="links det-l"><button type="button" class="link" id="detRenombrar">Renombrar</button><a class="link" id="detEnlace" target="_blank" rel="noopener">Abrir enlace ↗</a><button type="button" class="link" id="detBorrar">Borrar</button></div>
+          <div class="opt"><span>Formato</span>
+            <div class="seg" data-key="formato"><button type="button" data-v="txt">TXT</button><button type="button" data-v="parrafos">Párrafos</button><button type="button" data-v="marcas">Marcas</button><button type="button" data-v="srt">SRT</button><button type="button" data-v="vtt">VTT</button><button type="button" data-v="json">JSON</button></div></div>
+          <div class="salida det-s" id="detTexto"></div>
+          <div id="detRecursos"></div>
+        </section>
+        <div class="ghost vacio-g alto" id="libNada">Elige<small>Una transcripción de la lista o un resultado de búsqueda</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== PREGUNTAR -->
+  <section class="pagina" data-p="preguntar" hidden>
+    <div class="cols">
+      <div>
+        <section class="step">
+          <div class="label up"><b>Pregunta a tus audios</b><span class="muted" id="chatHint">Cada dato con su minuto exacto</span></div>
+          <div class="chat" id="chat"><div class="ghost vacio-g">Pregunta<small>¿Qué dijo sobre el déficit calórico? · Resume la parte de la banca · ¿En qué minuto habla de precios?</small></div></div>
+          <div class="ask">
+            <textarea id="pregunta" rows="2" spellcheck="false" placeholder="Escribe tu pregunta (Ctrl+Enter)"></textarea>
+            <button class="btn" type="button" id="btnPreguntar">Preguntar</button>
+          </div>
+          <div class="links chat-l"><button type="button" class="link" id="btnNuevaCharla">Nueva conversación</button></div>
+        </section>
+      </div>
+      <div class="pegado">
+        <section class="step">
+          <div class="label up"><b>Dónde buscar</b><span class="muted" id="alcanceHint"></span></div>
+          <div class="opt"><span>Alcance</span>
+            <div class="seg" data-key="alcance"><button type="button" data-v="todo">Toda la biblioteca</button><button type="button" data-v="una">Solo una</button></div></div>
+          <div id="pregPicker"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== CREAR -->
+  <section class="pagina" data-p="crear" hidden>
+    <div class="cols">
+      <div>
+        <section class="step">
+          <div class="label up"><b>01 · Transcripción</b><span class="muted" id="crearDe"></span></div>
+          <div id="crearPicker"></div>
+        </section>
+        <section class="step">
+          <div class="label up"><b>02 · Qué crear</b><span class="muted">Con IA local por defecto</span></div>
+          <ul class="list tipos" id="tipos"></ul>
+          <label class="field"><input id="indicaciones" spellcheck="false" placeholder="Indicaciones opcionales: tono, público, idioma…"></label>
+          <div class="acts"><button class="btn" type="button" id="btnCrear">Crear</button></div>
+        </section>
+      </div>
+      <div class="pegado">
+        <section class="step">
+          <div class="label up"><b id="crearTitulo">Resultado</b><span class="muted" id="crearFase"></span></div>
+          <div class="salida md-out" id="crearSalida"><div class="ghost vacio-g">Crea<small>Resumen, capítulos para YouTube, guía, checklist, guion de reel…</small></div></div>
+          <div class="acts">
+            <button class="btn" type="button" id="crearCopiar">Copiar</button>
+            <button class="btn ghost-btn" type="button" id="crearGuardar">Guardar .md</button>
+          </div>
+          <div id="crearPrevios"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================== AJUSTES -->
+  <section class="pagina angosta" data-p="ajustes" hidden>
+    <section class="step">
+      <div class="label up"><b>01 · Inteligencia artificial</b><span class="muted" id="iaHint"></span></div>
+      <div class="opt"><span>Proveedor</span><div class="seg" id="segProv"></div></div>
+      <div id="cfgNav" hidden>
+        <div class="opt"><span>En tu navegador</span><b id="navEstado">—</b></div>
+        <div class="opt"><span>Modelo</span><div class="seg" id="segNav"></div></div>
+        <p class="nota muted up">La IA se descarga una vez y corre en tu tarjeta gráfica con WebGPU. Nada sale de este navegador.</p>
+      </div>
+      <div id="cfgOllama" hidden>
+        <div class="opt"><span>Ollama</span><span><b id="olEstado">—</b><button type="button" class="lnk" id="btnEncender">Encender</button></span></div>
+        <div class="opt"><span>Modelo local</span><div class="seg" id="segOllama"></div></div>
+        <p class="nota muted up" id="notaOllama"></p>
+      </div>
+      <div id="cfgClaude" hidden>
+        <div class="opt"><span>Modelo</span><div class="seg" id="segClaude"></div></div>
+        <div class="linkbox"><label class="field"><input id="claveClaude" type="password" autocomplete="off" placeholder="Clave de la API de Claude (sk-ant-…)"></label><button class="btn ghost-btn" type="button" id="btnClave">Guardar</button></div>
+        <p class="nota muted up" id="notaClaude"></p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="label up"><b>02 · Dónde se guarda</b></div>
+      <div class="linkbox" id="cfgCarpeta"><label class="field"><input id="carpeta" spellcheck="false" placeholder="Carpeta para exportar"></label><button class="btn ghost-btn" type="button" id="btnCarpeta">Examinar</button><button class="btn ghost-btn" type="button" id="btnAbrirCarpeta">Abrir</button></div>
+      <p class="nota muted up" id="notaDescargas" hidden>Lo que exportas o creas se descarga a tu carpeta de descargas.</p>
+      <div class="opt"><span>Biblioteca</span><span class="ruta"><b id="rutaLib">—</b><button type="button" class="lnk" id="btnAbrirLib">Abrir</button></span></div>
+    </section>
+
+    <section class="step">
+      <div class="label up"><b>03 · Por qué Tiro</b><span class="muted">Frente a lo que ya existe</span></div>
+      <ul class="list vs" id="vs"></ul>
+    </section>
+  </section>
+
+</main>
+
+<div class="marquee" aria-hidden="true"><div><span>Tiro</span><span>Transcribe</span><span>Pregunta</span><span>Crea</span><span>Tiro</span><span>Transcribe</span><span>Pregunta</span><span>Crea</span></div></div>
+<footer class="footer">
+  <a href="https://eyverqt.netlify.app/tiro" target="_blank" rel="noopener">Ver en el portfolio</a>
+  <a href="https://github.com/eyverqt" target="_blank" rel="noopener">GitHub</a>
+  <a href="https://cal.com/eyverqt/15min" target="_blank" rel="noopener">Agendar llamada</a>
+  <a href="https://wa.me/573127115299" target="_blank" rel="noopener">WhatsApp</a>
+  <a href="mailto:eyverqt@gmail.com">Email</a>
+</footer>
+
+<input type="file" id="archivo" multiple hidden>
+<div class="toast" id="toast" hidden></div>
+
+<script src="comun.js"></script>
+<script src="local.js"></script>
+<script src="web.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

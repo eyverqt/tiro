@@ -1,0 +1,12 @@
+# Tiro - dependencias
+#
+# faster-whisper arrastra ctranslate2, tokenizers, huggingface-hub, onnxruntime
+# y numpy. Todo local: la red solo se usa la primera vez, para bajar el modelo.
+# yt-dlp baja el audio de los enlaces. anthropic solo se usa si eliges Claude
+# en AJUSTES; con Ollama todo se queda en tu equipo.
+#
+# Python 3.9 - 3.13 (ctranslate2 todavia no publica ruedas para 3.14).
+faster-whisper>=1.1.0
+numpy>=1.24
+yt-dlp>=2025.1.1
+anthropic>=0.70
